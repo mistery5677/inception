@@ -1,0 +1,30 @@
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    server_name login.42.fr; # Substitua 'login' pelo seu user
+
+    # Certificados SSL
+    ssl_certificate /etc/nginx/ssl/inception.crt;
+    ssl_certificate_key /etc/nginx/ssl/inception.key;
+
+    # Protocolos TLS obrigatórios (apenas 1.2 e 1.3)
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    # Diretório raiz (volume compartilhado com o WordPress)
+    root /var/www/html;
+    index index.php index.html index.htm;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # Redirecionamento PHP para o container do WordPress
+    location ~ \.php$ {
+        include fastcgi_params;
+        # 'wordpress' é o nome do serviço/container na rede docker
+        fastcgi_pass wordpress:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}
