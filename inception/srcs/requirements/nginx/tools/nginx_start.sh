@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Gera o certificado SSL autoassinado se não existir
 if [ ! -f /etc/nginx/ssl/inception.crt ]; then
