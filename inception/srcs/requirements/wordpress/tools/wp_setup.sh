@@ -6,7 +6,7 @@ sleep 10
 # Só instala o WordPress se ele ainda não estiver lá
 if [ ! -f /var/www/html/wp-config.php ]; then
     echo "A descarregar o WordPress..."
-    wp core download --allow-root
+    php -d memory_limit=512M /usr/bin/wp core download --allow-root
 
     echo "A configurar a ligação à base de dados..."
     wp config create --dbname=$MYSQL_DATABASE \
