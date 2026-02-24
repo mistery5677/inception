@@ -8,10 +8,10 @@ RUN apk update && apk add --no-cache php83 php83-fpm php83-mysqli php83-json php
 # 👉 ADICIONA ESTA LINHA: Cria o atalho para o php para o wp-cli funcionar
 RUN ln -s /usr/bin/php83 /usr/bin/php
 
-# Descarrega e instala o WP-CLI
-RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+# Descarrega e instala o WP-CLI usando o wget (nativo do Alpine) e coloca na pasta principal
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x wp-cli.phar \
-    && mv wp-cli.phar /usr/local/bin/wpwp
+    && mv wp-cli.phar /usr/bin/wp
 
 # Cria a diretoria web e ajusta os donos
 RUN mkdir -p /var/www/html && chown -R nobody:nobody /var/www/html
