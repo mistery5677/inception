@@ -11,6 +11,20 @@ RUN ln -s /usr/bin/php83 /usr/bin/php
 # Descarrega e instala o WP-CLI
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x wp-cli.phar \
-    && mv wp-cli.phar /usr/local/bin/wp
+    && mv wp-cli.phar /usr/local/bin/wpwp
 
-# ... (o resto do ficheiro fica igual)
+# Cria a diretoria web e ajusta os donos
+RUN mkdir -p /var/www/html && chown -R nobody:nobody /var/www/html
+
+# Copia as nossas configurações
+COPY ./conf/www.conf /etc/php83/php-fpm.d/www.conf
+COPY ./tools/wp_setup.sh /tmp/wp_setup.sh
+RUN chmod +x /tmp/wp_setup.sh
+
+# A diretoria de trabalho passa a ser a do volume partilhado
+WORKDIR /var/www/html
+
+# Expõe a porta para o NGINX falar com o PHP-FPM
+EXPOSE 9000
+
+ENTRYPOINT ["/tmp/wp_setup.sh"]
