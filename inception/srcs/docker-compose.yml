@@ -1,3 +1,51 @@
+version: '3'
+
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb # O nome da imagem tem de ser igual ao serviço
+    build:
+      context: requirements/mariadb
+      dockerfile: Dockerfile
+    restart: always # Exigido: os contentores têm de reiniciar em caso de crash
+    networks:
+      - inception
+    volumes:
+      - mariadb:/var/lib/mysql # O volume nomeado que criaste em baixo mapeado para a pasta do MySQL
+    env_file:
+      - .env
+
+  wordpress:
+    container_name: wordpress
+    image: wordpress
+    build:
+      context: requirements/wordpress
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - inception
+    volumes:
+      - wordpress:/var/www/html # O volume do site mapeado para a pasta web
+    env_file:
+      - .env
+
+  nginx:
+    container_name: nginx
+    image: nginx
+    build:
+      context: requirements/nginx
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "443:443" # Exigido: NGINX é o único entrypoint, apenas pela porta 443
+    networks:
+      - inception
+    volumes:
+      - wordpress:/var/www/html # O NGINX também precisa de aceder aos ficheiros do site para os servir
+    env_file:
+      - .env
+
+# --- A tua configuração perfeita entra aqui em baixo ---
 volumes:
   wordpress:
     driver: local
@@ -12,6 +60,7 @@ volumes:
       type: none
       device: /home/miafonso/data/mariadb
       o: bind
+
 networks:
   inception:
     driver: bridge
