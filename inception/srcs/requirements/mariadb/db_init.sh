@@ -23,11 +23,11 @@ GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
     
-    # Executa o SQL
+	# Executa o SQL
     mysql -u root --password="" < /tmp/init_db.sql
     
-    # Para o servidor temporário
-    killall mysqld
+    # Para o servidor temporário de forma segura
+    mysqladmin -u root -p$MYSQL_ROOT_PASSWORD shutdown
     sleep 2
 fi
 
