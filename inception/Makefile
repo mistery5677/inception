@@ -1,6 +1,6 @@
 # --- Configuração ---
 NAME = inception
-LOGIN = seu_login
+LOGIN = miafonso
 # Caminhos para os volumes no host (exigido pelo subject)
 DATA_PATH = /home/$(LOGIN)/data
 WP_DATA = $(DATA_PATH)/wordpress
