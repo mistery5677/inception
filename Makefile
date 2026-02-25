@@ -34,9 +34,9 @@ clean: down
 
 # Remove all docker and delete the disk data
 fclean: clean
-	@echo "$(GREEN)Removendo TODOS os dados persistentes (requer sudo)...$(RESET)"
+	@echo "$(GREEN)Removing date (sudo requer)...$(RESET)"
 	@sudo rm -rf $(DATA_PATH)
-	@echo "$(GREEN)Limpando sistema Docker (prune)...$(RESET)"
+	@echo "$(GREEN)Cleaning the system(prune)...$(RESET)"
 	@docker system prune -af
 
 # Restart everything
