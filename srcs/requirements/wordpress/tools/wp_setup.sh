@@ -5,6 +5,12 @@ sleep 10
 
 # Start the WordPress if he is not there
 if [ ! -f /var/www/html/wp-config.php ]; then
+    
+    # Read the passwords
+    MYSQL_PASSWORD=$(cat /run/secrets/db_password)
+    WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
+    WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
+
     echo "Downloading Wordpress..."
     php -d memory_limit=512M /usr/bin/wp core download --allow-root
 

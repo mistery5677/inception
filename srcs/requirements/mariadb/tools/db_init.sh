@@ -1,11 +1,15 @@
 #!/bin/sh
 
+# Reads the passwords
+MYSQL_PASSWORD=$(cat /run/secrets/db_password)
+MYSQL_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
+
 # Check if the database is started
 if [ ! -d "/var/lib/mysql/mysql" ]; then
     
-    echo "Inicializando MariaDB..."
+    echo "Initializing MariaDB..."
     
-	# Install the data system
+    # Install the data system
     mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
     # Start the server to create the users
@@ -24,7 +28,7 @@ GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
     
-	# Execute SQL
+    # Execute SQL
     mysql -u root --password="" < /tmp/init_db.sql
     
     # Stop the temp server safe
