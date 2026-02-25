@@ -2,6 +2,9 @@ version: '3'
 
 services:
   mariadb:
+    secrets:
+      - db_password
+      - db_root_password
     container_name: mariadb
     image: mariadb # The name of the service
     build:
@@ -64,3 +67,9 @@ volumes:
 networks:
   inception:
     driver: bridge
+
+secrets:
+  db_password:
+    file: ../secrets/db_password.txt
+  db_root_password:
+    file: ../secrets/db_root_password.txt
