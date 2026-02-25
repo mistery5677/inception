@@ -36,6 +36,9 @@ if [ ! -f /var/www/html/wp-config.php ]; then
     echo "WordPress is installed!"
 fi
 
+# Check if PHP-FPM has the read and write permissions
+chown -R nobody:nobody /var/www/html
+
 echo "Initializing PHP-FPM..."
 # Executes the PHP-FPM in foreground according to PID 1 rule of the project
 exec /usr/sbin/php-fpm83 -F
